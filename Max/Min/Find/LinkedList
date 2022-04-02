@@ -1,0 +1,104 @@
+#include<stdlib.h>
+#include<iostream>
+
+using namespace std;
+
+struct node{
+	int data;
+	node*next;//The place that holds address of next node
+};
+
+void addnode(node*&head){
+	node*tmp1=new node;
+	node*tmp2=new node;//Two nodes were created
+	
+	tmp2->next=tmp1;//connect third with second
+	cout<<"Fill first node: \n";int y;cin>>y;
+	tmp2->data=y;
+	tmp1->next=head;//connect second with first (NULL node)
+	cout<<"Fill second node: \n";int z;cin>>z;
+	tmp1->data=z;
+	head = tmp2;//the head now points at the first node
+	
+}
+int max(node*&head){
+	node*p=head;//copy head address
+	if(head==NULL){
+		cout<<"empty list";
+	}
+	else{
+	int big = head->data;//Assume biggest at start of list
+	while(p!=NULL){//This condition reaches the end of the list
+		if(big<p->data){//find biggest number
+			big = p->data;
+		}
+		p = p->next;//traverses the list
+	}
+	return big;
+}}
+int min(node*&head){
+	node*p=head;//copy head address
+	if(head==NULL){
+		cout<<"empty list";
+	}
+	else{
+	int smoll = head->data;//assume smallest at start
+	while(p!=NULL){
+		if(smoll>p->data){
+			smoll = p->data;
+		}
+		p = p->next;//traverse the list
+	}
+	return smoll;
+}}
+int counter(node*&head){
+	node*p=head;
+	if(head==NULL){
+		cout<<"empty list";
+	}
+	else{
+	int count=0;
+	cout<<endl;
+	while(p!=NULL){
+		count++;
+		cout<<p->data<<"->>";
+		p = p->next;
+	}
+	cout<<"NULL";
+	return count;
+}}
+void find(node*&head,int y){
+	node*p=head;
+	if(head==NULL){
+		cout<<"empty list";
+	}
+	else{
+	int flg=0;
+	while(p!=NULL){
+		if(y==p->data){
+			cout<<"\n FOUND IT!";flg=1;break;
+		}
+		p=p->next;
+	}
+	if(flg==0){
+		cout<<"\n NOT FOUND :(";
+	}
+
+}}
+
+
+int main(){
+	int x;
+	node*head=new node;
+	head->next=NULL;
+	cout<<"Fill third node: \n";cin>>x;
+	head->data=x;
+	addnode(head);//calling by refrence;
+	cout<<"\nMaximum number in list: \n"<<max(head);//calling by refrence
+	cout<<"\nMinimum number in list \n"<<min(head);
+	cout<<"\nNumber of lists created: \n"<<counter(head)<<endl;
+	cout<<"Find this number: \n";int y;cin>>y;
+	find(head,y);
+	delete[]head;
+	return 0;
+}//end main
