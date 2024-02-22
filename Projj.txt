@@ -1,0 +1,110 @@
+
+Create hash table (hash map) that parses through the OpTable it takes the Instruction name (ex: LDA) as a key 
+and the opcode as a the value, each line it pushes the Instruction name and opcode into the hash map table.
+
+Create a Label Vector that takes (String:LabelName,String:LabelAddr,Int:LabelType) //LabelType is used to check for Relocation.
+
+// Now you have all the Instructions and their opcodes in a tabel without the need to parse through the 
+
+Open Input File
+Get ProgName.
+
+Jump to certain Index
+Using SubStr get the startaddress and save it in startaddr var. (ex:1000)
+Concat "00" To the start address. and Update the start address var.
+
+Initialize the LOCCTR = ZERO.
+
+LOOP OVER THE INPUT FILE:
+		
+		Get the Label Name.
+		Jump to certain Index get the Instruction.  	/*No need to Check for Relocation Because Resb/Resw have no obj code.*/
+									
+		if(RESW) 
+ 		{Set the Label address to LOCCTR. // Now I have lable's address.
+		 Get the operand Mul by *3 & add to the LOCCTR
+		 Update  the LOCCTR
+		 Set LabelType = N; //N denotes Any Number (i.e) Garbage Value. Must != (0 or 1)
+		 Push the Label,Labeladdr,LabelType into the SymTb Vector.}
+
+		else if(RESB)
+			{Set the Label address to LOCCTR
+			 Get the Operand, Conv to HEX and add to LOCCTR
+			Set LabelType = N; //N denotes Any Number (i.e) Garbage Value. Must != (0 or 1)
+			  Push LabelName,LabelAddr,LabelType To SymTb Vector.}
+
+		else if(WORD)
+			{Set the LabelType = 0 // Doesn't need Relocation.
+			 Get the operand Conv to HEX //Note that the HEX function must return a 6 CHAR string.
+			 Add 3 to LOCCTR
+			 Push LabelName,LabelAddr,LabelType to SymTb Vector.}
+
+		else if(BYTE)  <------------------------------- /* Needs to be Revised */
+			{Set the LabelType = 0
+			 Get the Operand & Conv To HEX}
+
+		}
+*****************************************************************************************************************************************
+Generating the Object Code for each Instruction.
+************************************************
+
+//After Filling the SymTb Vector Now I have Each Label and it's Address. This will Help when checking for Label that aren't yet Initialized
+
+	LOOP: /*Loop Condition.*/
+
+Get The Next Instruction
+Look for it in the OpTab Map
+
+if(Instruction is found)
+	{set opcd = Opcode of the instruction} //Remember that the SymTb hash map is Intialized with Instruction name as key and opcode as value
+
+Get the Label
+Look for it in the SymTb Vector.
+
+if(Label is found in the SymTb) 002000
+	{Concat the opcd to Labeladdr of the found Label
+	 Push Into TRec Vector. } // Now I have an Object code.
+
+if(# is found at the begin of the Label) // Immediate
+{Get the first CHAR in the Label addr of the found Label and add 1 to it then CONV to HEX
+ Concat the opcd to the Updated Labeladdr}
+
+if(',X' is found at the end of the label)
+{Get the Labeladdr add 7 to the first CHAR, CONV to HEX
+ Concat opcd with Labeladdr
+ Push Into TRec Vector. }
+.
+.
+. /*Still Needs building.*/ How to deal with Format 1 ? How to deal with Non-Forward Refrenced Labels ?
+
+*****************************************************************************************************************************************
+Printing To File.
+*****************
+// In this step we should have a Vector that Contains all the TRec in the Program.
+
+
+LOOP: /*Loop Condition.*/
+
+Parse Through the TRec Vector.
+Check the Diff between the Current element in the Vector and the next.
+
+if(length = '1E')
+{Start new T Record.
+ add 1E to the start address.} // NOTE: there is a bunch of Conversion from and to HEX in these IF statments.
+
+if(Diff > 3{Start new T Record. add the diff to the startaddress}// That means there's RESW/RESB
+
+if(Diff = 3)// That means there's no RESW/RESB
+{Print the Element from the TRec Vector.
+ Add 3 to the Length Variable} // The lengthVariable will determine at the end the Length of the Record.
+.
+.
+.
+// Still Need to handel the WORD and BYTE
+// GOAL: get the type of each Obj_code and Concat it to Each other then Conv it to HEX should have three CHARS ---
+
+
+
+
+
+
