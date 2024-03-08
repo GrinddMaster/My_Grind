@@ -4,6 +4,7 @@
 #include<stdio.h> 
 #include<GL/glut.h> 
 #include<math.h> 
+#include<string.h>
 #define pi 3.142857 
 
 // function to initializ
@@ -23,6 +24,14 @@ float y = r * sinf(theta);//calculate the y component
 glVertex2f(x + cx, y + cy);//output vertex
 }
 glEnd();
+}
+
+void printSome(char *str,int x,int y) {
+	
+glColor3f (1, 1.0, 1.0);
+glRasterPos2d(x,y);
+for (int i=0;i<strlen(str);i++){glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,str[i]);}
+glFlush();
 }
 
 
@@ -47,13 +56,13 @@ void init2D (void)
 void Display (void) 
 { glClear(GL_COLOR_BUFFER_BIT);
 glColor3f(1.0, 1.0, 1.0);
-DrawCircle(-450,300,60,200);
-DrawCircle(-400,330,60,200);
-DrawCircle(-350,290,60,200);	
+DrawCircle(-450,300,60,1000);
+DrawCircle(-400,330,60,1000);
+DrawCircle(-350,290,60,1000);	
 
-DrawCircle(450,330,60,200);
-DrawCircle(400,350,60,200);
-DrawCircle(350,330,60,200);	
+DrawCircle(450,330,60,1000);
+DrawCircle(400,350,60,1000);
+DrawCircle(350,330,60,1000);	
 
 
 glBegin(GL_QUADS);
@@ -65,7 +74,7 @@ glVertex2i(100,50);
 glEnd();
 
 glBegin(GL_POLYGON);
-glColor3f(0, 0, 1);
+glColor3f(1, 1, 0);
 glVertex2i(-800,-400);
 glVertex2i(-350,-400);
 glVertex2i(-100,50);
@@ -73,13 +82,42 @@ glVertex2i(-800,50);
 glEnd();
 
 glBegin(GL_POLYGON);
-glColor3f(0, 0, 1);
+glColor3f(1, 1, 0);
 glVertex2i(800,-400);
 glVertex2i(350,-400);
 glVertex2i(100,50);
 glVertex2i(800,50);
-
 glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(1, 1, 1);
+glVertex2i(25,-400);
+glVertex2i(-25,-400);
+glVertex2i(-25,-300);
+glVertex2i(25,-300);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(1, 1, 1);
+glVertex2i(25,-250);
+glVertex2i(-25,-250);
+glVertex2i(-25,-150);
+glVertex2i(25,-150);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(0.647, 0.165, 0.165);
+glVertex2i(25,-100);
+glVertex2i(-25,-100);
+glVertex2i(-25,150);
+glVertex2i(25,150);
+glEnd();
+glColor3f(1, 1, 1);
+DrawCircle(0,150,90,6);
+glColor3f(1, 0, 0);
+DrawCircle(0,150,85,6);
+
+printSome("Stop",-30,150);
 
 
 glutSwapBuffers();
